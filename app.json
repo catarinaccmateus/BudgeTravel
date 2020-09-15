@@ -1,0 +1,12 @@
+{
+  "name": "AmazingApp",
+  "displayName": "AmazingApp",
+  "expo": {
+    "name": "AmazingApp",
+    "slug": "AmazingApp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
