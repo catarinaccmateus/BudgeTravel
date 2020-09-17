@@ -2,6 +2,8 @@ import React from "react";
 import { Text, View, Button, Image, TouchableOpacity } from "react-native";
 
 import styles from "./styles";
+import { buttonOpacity } from "../../utils/constants"
+
 
 export default function Main({ navigation }) {
   return (
@@ -11,22 +13,22 @@ export default function Main({ navigation }) {
         style={styles.logo}
       />
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Trips")}>
+        <TouchableOpacity activeOpacity={buttonOpacity} onPress={() => navigation.navigate("Create")}>
           <View style={styles.button}>
             <Image
               source={require("../../../assets/palm.png")}
               style={styles.buttonIcon}
             />
-            <Text>Check your trips</Text>
+            <Text>Create trip</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Create")}>
+        <TouchableOpacity activeOpacity={buttonOpacity} onPress={() => navigation.navigate("Trips")}>
           <View style={styles.button}>
             <Image
               source={require("../../../assets/view.png")}
               style={styles.buttonIcon}
             />
-            <Text>Create a new trip</Text>
+            <Text>View trip</Text>
           </View>
         </TouchableOpacity>
       </View>

@@ -1,12 +1,14 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { widthScale, heightScale } from "./../../utils/constants";
+import { widthScale, heightScale, colors } from "./../../utils/constants";
+import { backgroundColor } from "../../utils/constants"
+import { color } from "react-native-reanimated";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "orange",
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
   },

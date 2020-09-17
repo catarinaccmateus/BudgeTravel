@@ -11,7 +11,13 @@ export const heightScale = screenHeight / 640;
 export const widthScale = screenWidth / 360;
 //export const statusBarHeight = getStatusBarHeight();
 
-export default [
+export const colors = {
+  background: "#ea9400"
+}
+
+export const buttonOpacity = .7
+
+export const countries = [
   "Afghanistan",
   "Albania",
   "Algeria",

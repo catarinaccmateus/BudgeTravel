@@ -38,21 +38,21 @@ export default class App extends React.Component {
             }}
           />
           <Stack.Screen
-            name="Trips"
-            component={Trips}
-            options={{
-              title: "Your trips",
-              headerTitleStyle: { alignSelf: "center", color: "orange" },
-              headerTintColor: "orange",
-            }}
-          />
-          <Stack.Screen
             name="Create"
             component={Create}
             options={{
               title: "Create a trip",
               headerLeft: null,
               headerTitleStyle: { alignSelf: "center", color: "orange" },
+            }}
+          />
+          <Stack.Screen
+            name="Trips"
+            component={Trips}
+            options={{
+              title: "Your trips",
+              headerTitleStyle: { alignSelf: "center", color: "orange" },
+              headerTintColor: "orange",
             }}
           />
         </Stack.Navigator>
