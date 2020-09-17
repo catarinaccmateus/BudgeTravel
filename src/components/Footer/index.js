@@ -4,7 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 
 import styles from "./styles";
 
-export default function Footer({ onClickContinue, onClickBack, firstPage }) {
+export default function Footer({
+  onClickContinue,
+  onClickBack,
+  firstPage,
+  saveTrip,
+}) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -32,14 +37,21 @@ export default function Footer({ onClickContinue, onClickBack, firstPage }) {
         />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => onClickContinue()}
+        onPress={firstPage ? () => onClickContinue() : () => saveTrip()}
         style={styles.continueButton}
       >
-        <Image
-          source={require("../../../assets/chevron_right.png")}
-          style={styles.continueIcon}
-        />
-        <Text>Continue</Text>
+        {firstPage ? (
+          <Image
+            source={require("../../../assets/chevron_right.png")}
+            style={styles.continueIcon}
+          />
+        ) : (
+          <Image
+            source={require("../../../assets/palm.png")}
+            style={styles.continueIcon}
+          />
+        )}
+        {firstPage ? <Text>Continue</Text> : <Text>Add Trip</Text>}
       </TouchableOpacity>
     </View>
   );

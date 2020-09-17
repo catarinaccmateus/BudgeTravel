@@ -12,7 +12,6 @@ export default class LocationInput extends React.Component {
     duration: "",
   };
   render() {
-    console.log("STATE IN RENDER", this.state);
     return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
@@ -41,7 +40,7 @@ export default class LocationInput extends React.Component {
           <TextInput
             style={styles.input}
             placeholder="Number of days"
-            onChangeText={(budget) => this.setState({ duration: duration })}
+            onChangeText={(val) => this.setState({ duration: val })}
             keyboardType={"number-pad"}
           />
         </View>

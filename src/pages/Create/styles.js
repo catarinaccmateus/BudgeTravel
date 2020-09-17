@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  calendar: {
+    backgroundColor: "white",
+  },
   title: {
     marginTop: 30 * heightScale,
     marginBottom: 30 * heightScale,

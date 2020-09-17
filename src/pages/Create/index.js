@@ -8,6 +8,8 @@ import {
   Button,
 } from "react-native";
 
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 import LocationInput from "../../components/LocationInput";
 
 import styles from "./styles";
@@ -32,23 +34,34 @@ export default class Create extends React.Component {
       end: "",
     },
     placesToTravel: [],
+    initialDate: new Date(),
+    endDate: new Date(),
     openLocationInput: false,
     maxNumberDestination: 12,
     firstPage: true,
     totalDuration: 0,
     minDuration: 30,
     maxDuration: 35,
-    test: {
-      country: "Hello",
-      budget: "29",
-    },
+    showCalendarInitialDate: false,
+    showCalendarEndDate: false,
   };
 
   saveTripDetails = async () => {
-    console.log("Saving");
+    const previousSavedObject = this.getData();
+    if (previousSavedObject !== null) {
+      previousSavedObject[this.state.tripName] = {
+        tripDuration: this.state.tripDuration,
+        travelers: this.state.travelers,
+        placesToTravel: this.state.placesToTravel,
+      };
+    } else {
+      previousSavedObject = {};
+    }
     try {
-      const jsonValue = JSON.stringify(this.state);
-      await AsyncStorage.setItem(`@${this.state.tripName}`, jsonValue);
+      const jsonValue = JSON.stringify(previousSavedObject);
+      await AsyncStorage.setItem("@BudgeTrip", jsonValue);
+      console.log("SAVED");
+      this.getData();
     } catch (e) {
       console.log("COULDNT ADD");
     }
@@ -70,15 +83,26 @@ export default class Create extends React.Component {
     this.setState({ firstPage: true });
   };
 
+  getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@BudgeTrip");
+      console.log("getData", jsonValue);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      return null;
+    }
+  };
+
   renderFirstPart = () => {
     return (
       <React.Fragment>
         <Text style={styles.title}>Let's start your trip planning!</Text>
         <TextInput
           style={styles.input}
-          placeholder="Trip duration"
-          keyboardType={"number-pad"}
-          onChangeText={(tripDuration) => this.setState({ tripDuration })}
+          placeholder="Trip Name"
+          onChangeText={(val) => this.setState({ tripName: val })}
+          keyboardType={"default"}
+          onSubmitEditing={Keyboard.dismiss}
         />
         <TextInput
           style={styles.input}
@@ -86,6 +110,32 @@ export default class Create extends React.Component {
           onChangeText={(travelers) => this.setState({ travelers })}
           keyboardType={"number-pad"}
           onSubmitEditing={Keyboard.dismiss}
+        />
+        {this.state.showCalendarInitialDate && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={this.state.initialDate}
+            mode={"date"}
+            is24Hour={true}
+            display="default"
+            onChange={(val) => this.setState({ initialDate: val })}
+          />
+        )}
+        {this.state.showCalendarEndDate && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={this.state.endDate}
+            mode={"date"}
+            is24Hour={true}
+            display="default"
+            onChange={(val) => this.setState({ endDate: val })}
+          />
+        )}
+        <TextInput
+          style={styles.input}
+          placeholder="Trip duration"
+          keyboardType={"number-pad"}
+          onChangeText={(tripDuration) => this.setState({ tripDuration })}
         />
       </React.Fragment>
     );
@@ -110,10 +160,12 @@ export default class Create extends React.Component {
   };
 
   render() {
-    const totalDays = this.state.placesToTravel.reduce(
-      (prev, curr) => prev.duration + curr,
-      0
-    );
+    const totalDays = this.state.placesToTravel.length
+      ? this.state.placesToTravel.reduce(
+          (acc, val) => val.duration * 1 + acc,
+          0
+        )
+      : "";
     console.log("total days", totalDays);
     return (
       <DismissKeyboard>
@@ -121,11 +173,11 @@ export default class Create extends React.Component {
           {this.state.firstPage
             ? this.renderFirstPart()
             : this.renderAddLocation()}
-          <Button onPress={this.saveTripDetails} />
           <Footer
-            onClickContinue={() => this.onClickContinue()}
-            onClickBack={() => this.goToFirstPage()}
+            onClickContinue={this.onClickContinue}
+            onClickBack={this.goToFirstPage}
             firstPage={this.state.firstPage}
+            saveTrip={this.saveTripDetails}
           />
         </View>
       </DismissKeyboard>

@@ -13,6 +13,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     flexDirection: "row",
+    zIndex: 99,
+    elevation: 99,
   },
   button: {
     position: "relative",
