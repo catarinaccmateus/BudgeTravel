@@ -16,11 +16,11 @@ const styles = StyleSheet.create({
   },
   button: {
     position: "relative",
-    top: -40,
+    top: -28,
   },
   image: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
   },
   text: {
     position: "relative",

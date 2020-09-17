@@ -14,6 +14,8 @@ import styles from "./styles";
 
 import Footer from "./../../components/Footer";
 
+import AsyncStorage from "@react-native-community/async-storage";
+
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -24,6 +26,7 @@ export default class Create extends React.Component {
   state = {
     tripDuration: "",
     travelers: "",
+    tripName: "Trip1",
     date: {
       start: "",
       end: "",
@@ -41,14 +44,19 @@ export default class Create extends React.Component {
     },
   };
 
-  saveTripDetails = () => {
+  saveTripDetails = async () => {
     console.log("Saving");
+    try {
+      const jsonValue = JSON.stringify(this.state);
+      await AsyncStorage.setItem(`@${this.state.tripName}`, jsonValue);
+    } catch (e) {
+      console.log("COULDNT ADD");
+    }
   };
 
-  addDestinationToState = (country, budget) => {
-    let actualPlaces = this.state.placesToTravel.push(this.state.test);
-    console.log("STATE PLACES", actualPlaces);
-    const updatedPlaces = actualPlaces.push(this.state.test);
+  addDestinationToState = (country, budget, duration) => {
+    let actualPlaces = this.state.placesToTravel;
+    actualPlaces.push({ country: country, budget: budget, duration: duration });
     this.setState({
       placesToTravel: actualPlaces,
     });
@@ -86,14 +94,13 @@ export default class Create extends React.Component {
   renderAddLocation = () => {
     return (
       <View>
-        <Text>Location </Text>
         <LocationInput addDestinationToState={this.addDestinationToState} />
         {this.state.placesToTravel.length > 0 &&
           this.state.placesToTravel.map((place) => {
             return (
               <View>
                 <Text>
-                  Location : {place.country} - Budget per person: {place.budger}
+                  Location : {place.country} - Budget per person: {place.budget}
                 </Text>
               </View>
             );
@@ -103,13 +110,18 @@ export default class Create extends React.Component {
   };
 
   render() {
-    console.log("STATE", this.state);
+    const totalDays = this.state.placesToTravel.reduce(
+      (prev, curr) => prev.duration + curr,
+      0
+    );
+    console.log("total days", totalDays);
     return (
       <DismissKeyboard>
         <View style={styles.container}>
           {this.state.firstPage
             ? this.renderFirstPart()
             : this.renderAddLocation()}
+          <Button onPress={this.saveTripDetails} />
           <Footer
             onClickContinue={() => this.onClickContinue()}
             onClickBack={() => this.goToFirstPage()}

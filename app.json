@@ -4,7 +4,7 @@
   "expo": {
     "name": "BudgeTravel",
     "slug": "BudgeTravel",
-    "icon": "",
+    "icon": "./assets/logo_cenas.png",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
     "android": {
@@ -12,7 +12,7 @@
       "versionCode": 1
     },
     "splash": {
-      "image": "",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#d6ea9400"
     }

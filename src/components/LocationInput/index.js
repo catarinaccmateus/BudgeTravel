@@ -1,38 +1,63 @@
 import React, { useState } from "react";
-import { TextInput, View, Button } from "react-native";
+import { TextInput, View, Button, Text } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import styles from "./styles";
 import countries from "../../utils/constants";
 
-export default function Footer({ addDestinationToState }) {
-  const [country, setCountry] = useState("");
-  const [budget, setBudget] = useState("");
-
-  return (
-    <View style={styles.container}>
-      <DropDownPicker
-        items={countries}
-        containerStyle={styles.dropdown}
-        style={styles.dropdown}
-        itemStyle={{
-          justifyContent: "flex-start",
-        }}
-        dropDownStyle={{ backgroundColor: "#fafafa" }}
-        onChangeItem={(country) => setCountry(country)}
-        placeholder="Choose a country"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Budget per day (€)"
-        onChangeText={(budget) => setBudget(budget)}
-        keyboardType={"number-pad"}
-      />
-      <Button
-        onPress={() => addDestinationToState(country, budget)}
-        title="Add"
-        color="#ffd699"
-      />
-    </View>
-  );
+export default class LocationInput extends React.Component {
+  state = {
+    country: "",
+    budget: "",
+    duration: "",
+  };
+  render() {
+    console.log("STATE IN RENDER", this.state);
+    return (
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <Text>Location </Text>
+          <DropDownPicker
+            items={countries}
+            containerStyle={styles.dropdown}
+            style={styles.dropdown}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            onChangeItem={(val) => {
+              console.log("SELECTED", val);
+              console.log("STATE", this.state.country);
+              this.setState({ country: val });
+            }}
+            placeholder="Choose a country"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Budget per day (€)"
+            onChangeText={(budget) => this.setState({ budget: budget })}
+            keyboardType={"number-pad"}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Number of days"
+            onChangeText={(budget) => this.setState({ duration: duration })}
+            keyboardType={"number-pad"}
+          />
+        </View>
+        <Button
+          onPress={() =>
+            this.props.addDestinationToState(
+              this.state.country,
+              this.state.budget,
+              this.state.duration
+            )
+          }
+          title="Add"
+          color="#ffd699"
+          style={styles.button}
+        />
+      </View>
+    );
+  }
 }

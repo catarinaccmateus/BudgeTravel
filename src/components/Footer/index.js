@@ -27,7 +27,7 @@ export default function Footer({ onClickContinue, onClickBack, firstPage }) {
         onPress={() => navigation.navigate("Home")}
       >
         <Image
-          source={require("../../../assets/TEST.png")}
+          source={require("../../../assets/icon_circular.png")}
           style={styles.image}
         />
       </TouchableOpacity>
