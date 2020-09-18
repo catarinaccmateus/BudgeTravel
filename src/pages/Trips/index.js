@@ -3,59 +3,70 @@ import {
   Text,
   View,
   ScrollView,
-  FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from "react-native";
 
 import styles from "./styles";
 
-const Item = ({ item, onPress, style }) => (
-  <TouchableOpacity activeOpacity={.7} onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.title}>{item.title}</Text>
-  </TouchableOpacity>
-);
-
+import { useNavigation } from "@react-navigation/native";
 export default class Trips extends React.Component {
-  state = {
-    trips: [
-      {
-        id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-        title: "First Item",
-      },
-      {
-        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-        title: "Second Item",
-      },
-      {
-        id: "58694a0f-3da1-471f-bd96-145571e29d72",
-        title: "Third Item",
-      },
-    ],
-    selectedId: null
-  };
-
-
-
-  renderItem = ({ item }) => {
-    return (
-      <Item
-        item={item}
-        onPress={() => this.setState({ selectedId: item.id })}
-        style={styles.listItem}
-      />
-    );
-  };
-
+  
   render() {
+
     return (
       <ScrollView contentContainerStyle={{ ...styles.scrollView, ...styles.container }}>
-        <Text>Ongoing</Text>
-        <FlatList
-          data={this.state.trips}
-          renderItem={this.renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={this.state.selectedId}
-        />
+        <View style={[styles.card, { marginTop: 32 }]}>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              source={require("../../../assets/tracker.png")}
+              style={styles.buttonIcon}
+            />
+            <View>
+              <Text>Ongoing</Text>
+              <Text style={{ fontWeight: "bold" }}>Trip name</Text>
+            </View>
+          </View>
+
+          <TouchableOpacity activeOpacity={.4} style={styles.button}>
+            <Text>Update</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.card}>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              source={require("../../../assets/bag.png")}
+              style={styles.buttonIcon}
+            />
+            <View>
+              <Text>Previous</Text>
+              <Text style={{ fontWeight: "bold" }}>Trip</Text>
+            </View>
+          </View>
+
+          <TouchableOpacity activeOpacity={.4} style={styles.button} >
+            <Text>View</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.card}>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              source={require("../../../assets/clock_or_timed.png")}
+              style={styles.buttonIcon}
+            />
+            <View>
+              <Text>Next</Text>
+              <Text style={{ fontWeight: "bold" }}>Trip</Text>
+            </View>
+          </View>
+
+          <TouchableOpacity activeOpacity={.4} style={styles.button}>
+            <Text>View</Text>
+          </TouchableOpacity>
+        </View>
+
       </ScrollView>
     );
   }
