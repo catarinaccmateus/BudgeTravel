@@ -15,7 +15,9 @@ export const colors = {
   background: "#ea9400",
 };
 
-export default [
+export const buttonOpacity = 0.7;
+
+export const countries = [
   "Afghanistan",
   "Albania",
   "Algeria",

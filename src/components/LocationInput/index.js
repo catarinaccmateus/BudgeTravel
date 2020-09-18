@@ -3,7 +3,7 @@ import { TextInput, View, Text, TouchableOpacity, Picker } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import styles from "./styles";
-import countries from "../../utils/constants";
+import { countries } from "../../utils/constants";
 import { widthScale, heightScale } from "./../../utils/constants";
 
 export default class LocationInput extends React.Component {

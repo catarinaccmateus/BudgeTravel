@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { widthScale, colors } from "../../utils/constants";
+import { widthScale, heightScale, colors } from "../../utils/constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,9 @@ const styles = StyleSheet.create({
   },
   button: {
     position: "relative",
-    top: -28,
+    top: -25 * heightScale,
+    borderRadius: 50,
+    borderColor: colors.background,
   },
   image: {
     width: 100 * widthScale,

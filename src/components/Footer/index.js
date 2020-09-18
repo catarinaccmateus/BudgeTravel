@@ -26,10 +26,11 @@ export default function Footer({
           <Text>Back</Text>
         </TouchableOpacity>
       ) : (
-        <View style={styles.backButton}></View>
-      )}
+          <View style={styles.backButton}></View>
+        )}
       <TouchableOpacity
         style={styles.button}
+        activeOpacity={1}
         onPress={() => navigation.navigate("Home")}
       >
         <Image

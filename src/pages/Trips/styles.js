@@ -1,14 +1,13 @@
-import React from "react";
 import { StyleSheet } from "react-native";
 
 import { widthScale, heightScale } from "./../../utils/constants";
+import { colors } from "../../utils/constants"
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#d6ea9400",
+    backgroundColor: colors.background,
     alignItems: "center",
-    justifyContent: "center",
   },
   margin: {
     margin: 5 * widthScale,
@@ -25,6 +24,13 @@ const styles = StyleSheet.create({
   scrollView: {
     height: 20 * heightScale,
   },
+  listItem: {
+    backgroundColor: "white",
+    width: 200 * widthScale,
+    marginBottom: 5 * heightScale,
+    padding: 10 * widthScale,
+    borderRadius: 5
+  }
 });
 
 export default styles;
