@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { TextInput, View, Button, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import { TextInput, View, Text, TouchableOpacity, Picker } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import styles from "./styles";
 import countries from "../../utils/constants";
+import { widthScale, heightScale } from "./../../utils/constants";
 
 export default class LocationInput extends React.Component {
   state = {
@@ -40,14 +41,18 @@ export default class LocationInput extends React.Component {
             onFocus={this.props.hideFooter}
             onBlur={this.props.showFooter}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Number of days"
-            onChangeText={(val) => this.setState({ duration: val })}
-            keyboardType={"number-pad"}
-            onFocus={this.props.hideFooter}
-            onBlur={this.props.showFooter}
-          />
+          <View style={styles.durationPicker}>
+            <Picker
+              selectedValue={this.state.duration}
+              onValueChange={(itemValue, itemIndex) =>
+                this.setState({ duration: itemValue })
+              }
+            >
+              <Picker.Item label="Select trip duration" value={3} />
+              <Picker.Item label="3" value={3} />
+              <Picker.Item label="4" value={4} />
+            </Picker>
+          </View>
         </View>
         <TouchableOpacity
           onPress={() =>

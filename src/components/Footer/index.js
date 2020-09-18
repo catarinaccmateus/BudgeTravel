@@ -9,6 +9,7 @@ export default function Footer({
   onClickBack,
   firstPage,
   saveTrip,
+  canSave,
 }) {
   const navigation = useNavigation();
   return (
@@ -48,10 +49,16 @@ export default function Footer({
         ) : (
           <Image
             source={require("../../../assets/palm.png")}
-            style={styles.continueIcon}
+            style={canSave ? styles.continueIcon : styles.disabledContinueIcon}
           />
         )}
-        {firstPage ? <Text>Continue</Text> : <Text>Add Trip</Text>}
+        {firstPage ? (
+          <Text>Continue</Text>
+        ) : (
+          <Text style={canSave ? {} : styles.disabledContinueIcon}>
+            Save Trip
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

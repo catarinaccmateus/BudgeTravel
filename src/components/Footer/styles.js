@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
     marginRight: 0,
     width: 80 * widthScale,
   },
+  disabledContinueIcon: {
+    opacity: 0.5,
+  },
   backButton: {
     justifyContent: "column",
     alignItems: "center",

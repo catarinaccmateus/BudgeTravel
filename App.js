@@ -55,7 +55,7 @@ export default class App extends React.Component {
             name="Create"
             component={Create}
             options={{
-              title: "Create a trip",
+              title: "New trip",
               headerLeft: null,
               headerTitleStyle: {
                 alignSelf: "center",

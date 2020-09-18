@@ -9,6 +9,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 15 * widthScale,
   },
+  durationPicker: {
+    backgroundColor: "white",
+    width: 280 * widthScale,
+    borderRadius: 4,
+    padding: 5 * widthScale,
+    marginBottom: 10 * heightScale,
+    height: 40 * heightScale,
+    justifyContent: "center",
+  },
   button: {
     width: 280 * widthScale,
     justifyContent: "center",

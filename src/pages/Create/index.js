@@ -15,6 +15,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 import LocationInput from "../../components/LocationInput";
 
+import TripCard from "./../../components/TripCard";
+
 import styles from "./styles";
 
 import Footer from "./../../components/Footer";
@@ -50,7 +52,7 @@ export default class Create extends React.Component {
     showFooter: true,
   };
 
-  componentDidMount = () => {
+  updateTripDuration = () => {
     const totalDays = this.state.placesToTravel.length
       ? this.state.placesToTravel.reduce(
           (acc, val) => val.duration * 1 + acc,
@@ -66,6 +68,7 @@ export default class Create extends React.Component {
       previousSavedObject[this.state.tripName] = {
         tripDuration: this.state.tripDuration,
         travelers: this.state.travelers,
+        beginningDate: this.state.beginningDate,
         placesToTravel: this.state.placesToTravel,
       };
     } else {
@@ -86,6 +89,7 @@ export default class Create extends React.Component {
     this.setState({
       placesToTravel: actualPlaces,
     });
+    this.updateTripDuration();
   };
 
   onClickContinue = () => {
@@ -165,7 +169,6 @@ export default class Create extends React.Component {
                 endDate: endDate,
                 showCalendarInitialDate: false,
               });
-              console.log("VALUE", val);
             }}
           />
         )}
@@ -188,25 +191,40 @@ export default class Create extends React.Component {
           addDestinationToState={this.addDestinationToState}
           hideFooter={() => this.hideFooter()}
           showFooter={() => this.showFooter()}
+          updateTripDuration={() => this.updateTripDuration()}
         />
-        {this.state.placesToTravel.length > 0 &&
-          this.state.placesToTravel.map((item, index) => {
-            return (
-              <View key={index}>
-                <Text>
-                  Location : {place.country} - Budget per person: {place.budget}
-                </Text>
-              </View>
-            );
-          })}
       </View>
     );
+  };
+
+  renderLocationCards = () => {
+    {
+      this.state.placesToTravel.length > 0 &&
+        this.state.placesToTravel.map((item, index) => {
+          return (
+            <View key={index}>
+              <Text>
+                Location : {item.country} - Budget per person: {item.budget}
+              </Text>
+            </View>
+          );
+        });
+    }
   };
 
   render() {
     return (
       <React.Fragment>
         <ScrollView contentContainerStyle={styles.container}>
+          <TripCard />
+          {this.state.placesToTravel.length ? (
+            <Text>
+              You have added {this.state.placesToTravel.length} countries. Total
+              duration: {this.state.totalDuration}
+            </Text>
+          ) : (
+            <Text>You have no trips yet</Text>
+          )}
           {this.state.firstPage
             ? this.renderFirstPart()
             : this.renderAddLocation()}
@@ -215,6 +233,9 @@ export default class Create extends React.Component {
             onClickBack={this.goToFirstPage}
             firstPage={this.state.firstPage}
             saveTrip={this.saveTripDetails}
+            canSave={
+              this.state.totalDuration >= this.state.minDuration ? true : false
+            }
           />
         </ScrollView>
       </React.Fragment>
