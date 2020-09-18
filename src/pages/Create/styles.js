@@ -1,14 +1,20 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { widthScale, heightScale } from "./../../utils/constants";
+import { widthScale, heightScale, colors } from "./../../utils/constants";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "orange",
+    height: 560 * heightScale,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
+  },
+  dateInput: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingRight: 5 * widthScale,
   },
   calendar: {
     backgroundColor: "white",

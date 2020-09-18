@@ -13,6 +13,8 @@ import Main from "./src/pages/Main";
 import Trips from "./src/pages/Trips";
 import Create from "./src/pages/Create";
 
+import { colors } from "./src/utils/constants";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 /* Splash Screen - If we want to load async storage during splash screen */
@@ -42,8 +44,11 @@ export default class App extends React.Component {
             component={Trips}
             options={{
               title: "Your trips",
-              headerTitleStyle: { alignSelf: "center", color: "orange" },
-              headerTintColor: "orange",
+              headerTitleStyle: {
+                alignSelf: "center",
+                color: colors.background,
+              },
+              headerTintColor: colors.background,
             }}
           />
           <Stack.Screen
@@ -52,7 +57,10 @@ export default class App extends React.Component {
             options={{
               title: "Create a trip",
               headerLeft: null,
-              headerTitleStyle: { alignSelf: "center", color: "orange" },
+              headerTitleStyle: {
+                alignSelf: "center",
+                color: colors.background,
+              },
             }}
           />
         </Stack.Navigator>

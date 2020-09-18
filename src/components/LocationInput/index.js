@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextInput, View, Button, Text } from "react-native";
+import { TextInput, View, Button, Text, TouchableOpacity } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import styles from "./styles";
@@ -12,10 +12,11 @@ export default class LocationInput extends React.Component {
     duration: "",
   };
   render() {
+    const countrySelected = this.state.country;
     return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
-          <Text>Location </Text>
+          <Text style={styles.titleDestination}>Choose your destination </Text>
           <DropDownPicker
             items={countries}
             containerStyle={styles.dropdown}
@@ -26,7 +27,7 @@ export default class LocationInput extends React.Component {
             dropDownStyle={{ backgroundColor: "#fafafa" }}
             onChangeItem={(val) => {
               console.log("SELECTED", val);
-              console.log("STATE", this.state.country);
+              console.log("STATE", countrySelected);
               this.setState({ country: val });
             }}
             placeholder="Choose a country"
@@ -36,15 +37,19 @@ export default class LocationInput extends React.Component {
             placeholder="Budget per day (€)"
             onChangeText={(budget) => this.setState({ budget: budget })}
             keyboardType={"number-pad"}
+            onFocus={this.props.hideFooter}
+            onBlur={this.props.showFooter}
           />
           <TextInput
             style={styles.input}
             placeholder="Number of days"
             onChangeText={(val) => this.setState({ duration: val })}
             keyboardType={"number-pad"}
+            onFocus={this.props.hideFooter}
+            onBlur={this.props.showFooter}
           />
         </View>
-        <Button
+        <TouchableOpacity
           onPress={() =>
             this.props.addDestinationToState(
               this.state.country,
@@ -52,10 +57,10 @@ export default class LocationInput extends React.Component {
               this.state.duration
             )
           }
-          title="Add"
-          color="#ffd699"
           style={styles.button}
-        />
+        >
+          <Text>Add location</Text>
+        </TouchableOpacity>
       </View>
     );
   }

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { widthScale } from "../../utils/constants";
+import { widthScale, colors } from "../../utils/constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     borderTopWidth: 5,
-    borderTopColor: "orange",
+    borderTopColor: colors.background,
     alignItems: "center",
     justifyContent: "space-around",
     flexDirection: "row",
@@ -21,8 +21,13 @@ const styles = StyleSheet.create({
     top: -28,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 100 * widthScale,
+    height: 100 * widthScale,
+    borderWidth: 15 * widthScale,
+    borderRadius: 400,
+    borderColor: colors.background,
+    padding: 0,
+    margin: 0,
   },
   text: {
     position: "relative",

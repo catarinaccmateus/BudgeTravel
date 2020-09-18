@@ -5,7 +5,10 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
-  Button,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  Alert,
 } from "react-native";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -44,6 +47,17 @@ export default class Create extends React.Component {
     maxDuration: 35,
     showCalendarInitialDate: false,
     showCalendarEndDate: false,
+    showFooter: true,
+  };
+
+  componentDidMount = () => {
+    const totalDays = this.state.placesToTravel.length
+      ? this.state.placesToTravel.reduce(
+          (acc, val) => val.duration * 1 + acc,
+          0
+        )
+      : 0;
+    this.setState({ totalDuration: totalDays });
   };
 
   saveTripDetails = async () => {
@@ -60,10 +74,9 @@ export default class Create extends React.Component {
     try {
       const jsonValue = JSON.stringify(previousSavedObject);
       await AsyncStorage.setItem("@BudgeTrip", jsonValue);
-      console.log("SAVED");
       this.getData();
     } catch (e) {
-      console.log("COULDNT ADD");
+      Alert.alert("There was an error. Please, try again.");
     }
   };
 
@@ -93,6 +106,16 @@ export default class Create extends React.Component {
     }
   };
 
+  showBeginningDatepicker = () => {
+    this.setState({
+      showCalendarInitialDate: !this.state.showCalendarInitialDate,
+    });
+  };
+
+  showEndingTimepicker = () => {
+    this.setState({ showCalendarEndDate: !this.state.showCalendarEndDate });
+  };
+
   renderFirstPart = () => {
     return (
       <React.Fragment>
@@ -102,15 +125,31 @@ export default class Create extends React.Component {
           placeholder="Trip Name"
           onChangeText={(val) => this.setState({ tripName: val })}
           keyboardType={"default"}
-          onSubmitEditing={Keyboard.dismiss}
+          onFocus={() => this.hideFooter()}
+          onBlur={() => this.showFooter()}
         />
         <TextInput
           style={styles.input}
           placeholder="Number of travelers"
-          onChangeText={(travelers) => this.setState({ travelers })}
+          onChangeText={(val) => this.setState({ val })}
           keyboardType={"number-pad"}
-          onSubmitEditing={Keyboard.dismiss}
+          onFocus={() => this.hideFooter()}
+          onBlur={() => this.showFooter()}
         />
+        <TouchableOpacity onPress={this.showBeginningDatepicker}>
+          <View style={[styles.input, styles.dateInput]}>
+            <Text>
+              {" "}
+              {this.state.initialDate.getDate()} /{" "}
+              {this.state.initialDate.getMonth() + 1} /
+              {" " + this.state.initialDate.getFullYear()}
+            </Text>
+            <Image
+              source={require("../../../assets/calendar.png")}
+              style={styles.calendarIcon}
+            />
+          </View>
+        </TouchableOpacity>
         {this.state.showCalendarInitialDate && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -118,37 +157,42 @@ export default class Create extends React.Component {
             mode={"date"}
             is24Hour={true}
             display="default"
-            onChange={(val) => this.setState({ initialDate: val })}
+            onChange={(event, val) => {
+              const endDate =
+                this.state.endDate < val ? val : this.state.endDate;
+              this.setState({
+                initialDate: val,
+                endDate: endDate,
+                showCalendarInitialDate: false,
+              });
+              console.log("VALUE", val);
+            }}
           />
         )}
-        {this.state.showCalendarEndDate && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={this.state.endDate}
-            mode={"date"}
-            is24Hour={true}
-            display="default"
-            onChange={(val) => this.setState({ endDate: val })}
-          />
-        )}
-        <TextInput
-          style={styles.input}
-          placeholder="Trip duration"
-          keyboardType={"number-pad"}
-          onChangeText={(tripDuration) => this.setState({ tripDuration })}
-        />
       </React.Fragment>
     );
+  };
+
+  hideFooter = () => {
+    this.setState({ showFooter: false });
+  };
+
+  showFooter = () => {
+    this.setState({ showFooter: true });
   };
 
   renderAddLocation = () => {
     return (
       <View>
-        <LocationInput addDestinationToState={this.addDestinationToState} />
+        <LocationInput
+          addDestinationToState={this.addDestinationToState}
+          hideFooter={() => this.hideFooter()}
+          showFooter={() => this.showFooter()}
+        />
         {this.state.placesToTravel.length > 0 &&
-          this.state.placesToTravel.map((place) => {
+          this.state.placesToTravel.map((item, index) => {
             return (
-              <View>
+              <View key={index}>
                 <Text>
                   Location : {place.country} - Budget per person: {place.budget}
                 </Text>
@@ -160,16 +204,9 @@ export default class Create extends React.Component {
   };
 
   render() {
-    const totalDays = this.state.placesToTravel.length
-      ? this.state.placesToTravel.reduce(
-          (acc, val) => val.duration * 1 + acc,
-          0
-        )
-      : "";
-    console.log("total days", totalDays);
     return (
-      <DismissKeyboard>
-        <View style={styles.container}>
+      <React.Fragment>
+        <ScrollView contentContainerStyle={styles.container}>
           {this.state.firstPage
             ? this.renderFirstPart()
             : this.renderAddLocation()}
@@ -179,8 +216,8 @@ export default class Create extends React.Component {
             firstPage={this.state.firstPage}
             saveTrip={this.saveTripDetails}
           />
-        </View>
-      </DismissKeyboard>
+        </ScrollView>
+      </React.Fragment>
     );
   }
 }

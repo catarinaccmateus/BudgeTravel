@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { widthScale, heightScale } from "./../../utils/constants";
+import { widthScale, heightScale, colors } from "./../../utils/constants";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "orange",
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
   },

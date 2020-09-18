@@ -11,6 +11,10 @@ export const heightScale = screenHeight / 640;
 export const widthScale = screenWidth / 360;
 //export const statusBarHeight = getStatusBarHeight();
 
+export const colors = {
+  background: "#ea9400",
+};
+
 export default [
   "Afghanistan",
   "Albania",
