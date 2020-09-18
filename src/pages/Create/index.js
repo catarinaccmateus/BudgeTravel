@@ -44,6 +44,8 @@ export default class Create extends React.Component {
     openLocationInput: false,
     maxNumberDestination: 12,
     firstPage: true,
+    secondPage: false,
+    thirdPage: false,
     totalDuration: 0,
     minDuration: 30,
     maxDuration: 35,
@@ -93,11 +95,19 @@ export default class Create extends React.Component {
   };
 
   onClickContinue = () => {
-    this.setState({ firstPage: false });
+    if (this.state.firstPage) {
+      this.setState({ firstPage: false, secondPage: true });
+    } else if (this.state.secondPage) {
+      this.setState({ firstPage: false, secondPage: false, thirdPage: true });
+    }
   };
 
   goToFirstPage = () => {
-    this.setState({ firstPage: true });
+    if (this.state.secondPage) {
+      this.setState({ firstPage: true, secondPage: false, thirdPage: false });
+    } else if (this.state.thirdPage) {
+      this.setState({ firstPage: false, secondPage: true, thirdPage: false });
+    }
   };
 
   getData = async () => {
@@ -122,7 +132,7 @@ export default class Create extends React.Component {
 
   renderFirstPart = () => {
     return (
-      <React.Fragment>
+      <View style={styles.createView}>
         <Text style={styles.title}>Let's start your trip planning!</Text>
         <TextInput
           style={styles.input}
@@ -172,7 +182,7 @@ export default class Create extends React.Component {
             }}
           />
         )}
-      </React.Fragment>
+      </View>
     );
   };
 
@@ -186,7 +196,7 @@ export default class Create extends React.Component {
 
   renderAddLocation = () => {
     return (
-      <View>
+      <View style={styles.createView}>
         <LocationInput
           addDestinationToState={this.addDestinationToState}
           hideFooter={() => this.hideFooter()}
@@ -198,39 +208,49 @@ export default class Create extends React.Component {
   };
 
   renderLocationCards = () => {
-    {
-      this.state.placesToTravel.length > 0 &&
-        this.state.placesToTravel.map((item, index) => {
-          return (
-            <View key={index}>
-              <Text>
-                Location : {item.country} - Budget per person: {item.budget}
+    console.log("stateee", this.state.placesToTravel);
+    return (
+      <View style={styles.scrollView}>
+        <ScrollView contentContainerStyle={styles.resume}>
+          {this.state.placesToTravel.length ? (
+            this.state.placesToTravel.map((place, index) => {
+              return (
+                <TripCard
+                  key={index}
+                  location={place.country}
+                  duration={place.duration * 1}
+                  budget={place.budget * 1}
+                  travelers={this.state.travelers * 1}
+                />
+              );
+            })
+          ) : (
+            <View style={styles.createView}>
+              <Text style={styles.title}>
+                You have no locations for your trip.
               </Text>
+              <Text style={styles.title}>Go back and start planning!</Text>
             </View>
-          );
-        });
-    }
+          )}
+        </ScrollView>
+      </View>
+    );
   };
 
   render() {
+    console.log("is it third page", this.state.placesToTravel);
     return (
       <React.Fragment>
         <ScrollView contentContainerStyle={styles.container}>
-          {this.state.placesToTravel.length ? (
-            <Text>
-              You have added {this.state.placesToTravel.length} countries. Total
-              duration: {this.state.totalDuration}
-            </Text>
-          ) : (
-            <Text>You have no trips yet</Text>
-          )}
-          {this.state.firstPage
-            ? this.renderFirstPart()
-            : this.renderAddLocation()}
+          {this.state.firstPage && this.renderFirstPart()}
+          {this.state.secondPage && this.renderAddLocation()}
+          {this.state.thirdPage && this.renderLocationCards()}
           <Footer
             onClickContinue={this.onClickContinue}
             onClickBack={this.goToFirstPage}
             firstPage={this.state.firstPage}
+            secondPage={this.state.secondPage}
+            thirdPage={this.state.thirdPage}
             saveTrip={this.saveTripDetails}
             canSave={
               this.state.totalDuration >= this.state.minDuration ? true : false

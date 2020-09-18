@@ -8,6 +8,8 @@ export default function Footer({
   onClickContinue,
   onClickBack,
   firstPage,
+  secondPage,
+  thirdPage,
   saveTrip,
   canSave,
 }) {
@@ -26,8 +28,8 @@ export default function Footer({
           <Text>Back</Text>
         </TouchableOpacity>
       ) : (
-          <View style={styles.backButton}></View>
-        )}
+        <View style={styles.backButton}></View>
+      )}
       <TouchableOpacity
         style={styles.button}
         activeOpacity={1}
@@ -39,10 +41,12 @@ export default function Footer({
         />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={firstPage ? () => onClickContinue() : () => saveTrip()}
+        onPress={
+          firstPage || secondPage ? () => onClickContinue() : () => saveTrip()
+        }
         style={styles.continueButton}
       >
-        {firstPage ? (
+        {!thirdPage ? (
           <Image
             source={require("../../../assets/chevron_right.png")}
             style={styles.continueIcon}
@@ -50,13 +54,17 @@ export default function Footer({
         ) : (
           <Image
             source={require("../../../assets/palm.png")}
-            style={canSave ? styles.continueIcon : styles.disabledContinueIcon}
+            style={
+              canSave && thirdPage
+                ? styles.continueIcon
+                : styles.disabledContinueIcon
+            }
           />
         )}
-        {firstPage ? (
+        {!thirdPage ? (
           <Text>Continue</Text>
         ) : (
-          <Text style={canSave ? {} : styles.disabledContinueIcon}>
+          <Text style={canSave && thirdPage ? {} : styles.disabledContinueIcon}>
             Save Trip
           </Text>
         )}

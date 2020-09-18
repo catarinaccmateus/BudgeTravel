@@ -7,7 +7,17 @@ const styles = StyleSheet.create({
     height: 560 * heightScale,
     backgroundColor: colors.background,
     alignItems: "center",
+  },
+  resume: {
+    marginTop: 20 * heightScale,
+  },
+  scrollView: {
+    height: 440 * heightScale,
+  },
+  createView: {
+    flex: 1,
     justifyContent: "center",
+    alignItems: "center",
   },
   dateInput: {
     flexDirection: "row",

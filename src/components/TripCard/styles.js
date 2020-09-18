@@ -8,9 +8,13 @@ const styles = StyleSheet.create({
     height: 80 * heightScale,
     width: 280 * widthScale,
     borderRadius: 4 * widthScale,
-    padding: 5 * widthScale,
+    padding: 10 * widthScale,
     alignItems: "stretch",
     justifyContent: "space-around",
+    marginBottom: 5 * heightScale,
+  },
+  text: {
+    fontWeight: "bold",
   },
   content: {
     flexDirection: "row",
