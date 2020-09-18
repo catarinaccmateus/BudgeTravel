@@ -13,6 +13,7 @@ export const widthScale = screenWidth / 360;
 
 export const colors = {
   background: "#ea9400",
+  header: "#753f23"
 };
 
 export const buttonOpacity = 0.7;

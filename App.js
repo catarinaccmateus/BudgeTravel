@@ -12,6 +12,7 @@ console.disableYellowBox = true;
 import Main from "./src/pages/Main";
 import Trips from "./src/pages/Trips";
 import Create from "./src/pages/Create";
+import PreviousTrips from "./src/pages/PreviousTrips";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -19,6 +20,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as SplashScreen from "expo-splash-screen";
 import { AppLoading } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import styles from "./src/pages/Trips/styles";
+import { colors } from "./src/utils/constants";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +46,7 @@ export default class App extends React.Component {
             options={{
               title: "Create a trip",
               headerLeft: null,
-              headerTitleStyle: { alignSelf: "center", color: "orange" },
+              headerTitleStyle: { alignSelf: "center", color: colors.header },
             }}
           />
           <Stack.Screen
@@ -51,8 +54,17 @@ export default class App extends React.Component {
             component={Trips}
             options={{
               title: "Your trips",
-              headerTitleStyle: { alignSelf: "center", color: "orange" },
-              headerTintColor: "orange",
+              headerTitleStyle: { alignSelf: "center", color: colors.header },
+              headerTintColor: colors.header,
+            }}
+          />
+          <Stack.Screen
+            name="PreviousTrips"
+            component={PreviousTrips}
+            options={{
+              title: "Previous trips",
+              headerTitleStyle: { alignSelf: "center", color: colors.header },
+              headerTintColor: colors.header,
             }}
           />
         </Stack.Navigator>
