@@ -216,7 +216,6 @@ export default class Create extends React.Component {
     return (
       <React.Fragment>
         <ScrollView contentContainerStyle={styles.container}>
-          <TripCard />
           {this.state.placesToTravel.length ? (
             <Text>
               You have added {this.state.placesToTravel.length} countries. Total
