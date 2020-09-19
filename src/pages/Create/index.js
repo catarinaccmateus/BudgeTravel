@@ -9,6 +9,7 @@ import {
   ScrollView,
   Image,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -23,11 +24,19 @@ import Footer from "./../../components/Footer";
 
 import AsyncStorage from "@react-native-community/async-storage";
 
+import { useNavigation } from "@react-navigation/native";
+
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
 );
+
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
 
 export default class Create extends React.Component {
   state = {
@@ -52,6 +61,7 @@ export default class Create extends React.Component {
     showCalendarInitialDate: false,
     showCalendarEndDate: false,
     showFooter: true,
+    saving: false,
   };
 
   updateTripDuration = () => {
@@ -65,12 +75,19 @@ export default class Create extends React.Component {
   };
 
   saveTripDetails = async () => {
+    this.setState({ saving: true });
+    const totalCost = this.state.placesToTravel.reduce((acc, val) => {
+      return acc + val.travelers * val.budget;
+    }, 0);
+    const endDate = addDays(this.state.beginningDate, tripDuration);
     const previousSavedObject = this.getData();
     if (previousSavedObject !== null) {
       previousSavedObject[this.state.tripName] = {
         tripDuration: this.state.tripDuration,
         travelers: this.state.travelers,
         beginningDate: this.state.beginningDate,
+        endDate: endDate,
+        totalCost: totalCost,
         placesToTravel: this.state.placesToTravel,
       };
     } else {
@@ -80,7 +97,11 @@ export default class Create extends React.Component {
       const jsonValue = JSON.stringify(previousSavedObject);
       await AsyncStorage.setItem("@BudgeTrip", jsonValue);
       this.getData();
+      this.setState({ saving: false });
+      this.props.navigation.navigate("Trips");
     } catch (e) {
+      console.log("error", e);
+      this.setState({ saving: false });
       Alert.alert("There was an error. Please, try again.");
     }
   };
@@ -252,6 +273,7 @@ export default class Create extends React.Component {
             secondPage={this.state.secondPage}
             thirdPage={this.state.thirdPage}
             saveTrip={this.saveTripDetails}
+            saving={this.state.saving}
             canSave={
               this.state.totalDuration >= this.state.minDuration ? true : false
             }

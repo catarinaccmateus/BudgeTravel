@@ -8,18 +8,24 @@ import { widthScale, heightScale } from "./../../utils/constants";
 
 export default class LocationInput extends React.Component {
   state = {
-    country: "",
+    country: null,
     budget: "",
     duration: "",
   };
   render() {
     const countrySelected = this.state.country;
+    console.log("country", countrySelected);
+    const countriesTest = countries.map((item) => {
+      return { label: item, value: item };
+    });
+    console.log("THIIS", countriesTest.length, countriesTest[0]);
     return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <Text style={styles.titleDestination}>Choose your destination </Text>
           <DropDownPicker
-            items={countries}
+            defaultValue={this.state.country}
+            items={countriesTest}
             containerStyle={styles.dropdown}
             style={styles.dropdown}
             itemStyle={{
@@ -27,8 +33,6 @@ export default class LocationInput extends React.Component {
             }}
             dropDownStyle={{ backgroundColor: "#fafafa" }}
             onChangeItem={(val) => {
-              console.log("SELECTED", val);
-              console.log("STATE", countrySelected);
               this.setState({ country: val });
             }}
             placeholder="Choose a country"

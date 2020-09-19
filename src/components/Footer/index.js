@@ -1,6 +1,11 @@
 import React from "react";
-import { View, Image, Text, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 
 import styles from "./styles";
 
@@ -12,8 +17,8 @@ export default function Footer({
   thirdPage,
   saveTrip,
   canSave,
+  saving,
 }) {
-  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       {!firstPage ? (
@@ -33,7 +38,7 @@ export default function Footer({
       <TouchableOpacity
         style={styles.button}
         activeOpacity={1}
-        onPress={() => navigation.navigate("Home")}
+        onPress={() => this.props.navigation.navigate("Home")}
       >
         <Image
           source={require("../../../assets/icon_circular.png")}
@@ -46,12 +51,13 @@ export default function Footer({
         }
         style={styles.continueButton}
       >
-        {!thirdPage ? (
+        {!thirdPage && (
           <Image
             source={require("../../../assets/chevron_right.png")}
             style={styles.continueIcon}
           />
-        ) : (
+        )}
+        {thirdPage && !saving && (
           <Image
             source={require("../../../assets/palm.png")}
             style={
@@ -61,6 +67,8 @@ export default function Footer({
             }
           />
         )}
+        {thirdPage && saving && <ActivityIndicator />}
+
         {!thirdPage ? (
           <Text>Continue</Text>
         ) : (

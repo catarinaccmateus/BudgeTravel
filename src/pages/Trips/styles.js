@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 import { widthScale, heightScale } from "./../../utils/constants";
-import { colors } from "../../utils/constants"
+import { colors } from "../../utils/constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
     color: "white",
     padding: 5 * widthScale,
   },
+  loadingSpinner: {
+    marginTop: 10 * heightScale,
+  },
   button: {
     width: 110 * widthScale,
     height: 40 * heightScale,
@@ -23,16 +26,23 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+  },
+  tripCard: {
+    backgroundColor: "white",
+    width: 200 * widthScale,
+    borderRadius: 10 * widthScale,
+    height: 30 * widthScale,
+    marginBottom: 5 * heightScale,
   },
   buttonIcon: {
     width: 30 * widthScale,
     height: 30 * widthScale,
-    marginRight: 10 * widthScale
+    marginRight: 10 * widthScale,
   },
   scrollView: {
     height: 20 * heightScale,
-    alignItems: "center"
+    alignItems: "center",
   },
   card: {
     flexDirection: "row",
