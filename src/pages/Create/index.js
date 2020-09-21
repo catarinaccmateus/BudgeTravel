@@ -76,17 +76,22 @@ export default class Create extends React.Component {
   };
 
   saveTripDetails = async () => {
+    console.log("click save");
     if (this.state.totalDuration < this.state.minDuration) {
       return Alert.alert(
         "You need to add more locations to achieve the minimum duration."
       );
     }
     this.setState({ saving: true });
+    console.log("ejhej");
     const totalCost = this.state.placesToTravel.reduce((acc, value) => {
       return acc + this.state.travelers * value.budget;
     }, 0);
+    console.log("totalcost", totalCost);
     const endDate = addDays(this.state.initialDate, this.state.tripDuration);
-    const previousSavedObject = await this.getData();
+    console.log("add days", endDate);
+    let previousSavedObject = await this.getData();
+    console.log("previoud object", previousSavedObject);
     if (previousSavedObject !== null) {
       previousSavedObject[this.state.tripName] = {
         tripDuration: this.state.tripDuration,
@@ -96,12 +101,17 @@ export default class Create extends React.Component {
         totalCost: totalCost,
         placesToTravel: this.state.placesToTravel,
       };
+      console.log("previous object", previousSavedObject);
     } else {
+      console.log("hehe");
       previousSavedObject = {};
     }
     try {
+      console.log("in try");
       const jsonValue = JSON.stringify(previousSavedObject);
+      console.log("json value");
       await AsyncStorage.setItem("@BudgeTrip", jsonValue);
+      console.log("hello");
       await this.getData();
       this.setState({ saving: false });
       this.props.navigation.navigate("Trips");
@@ -144,7 +154,12 @@ export default class Create extends React.Component {
   getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("@BudgeTrip");
-      console.log("I was able to get data");
+      console.log(
+        "I was able to get data",
+        "it is",
+        jsonValue,
+        JSON.parse(jsonValue)
+      );
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       return null;

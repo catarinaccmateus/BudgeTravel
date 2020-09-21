@@ -49,31 +49,32 @@ export default class Trips extends React.Component {
 		await this.getData();
 	};
 
-	getData = async () => {
-		this.setState({ loading: true, error: false });
-		try {
-			const jsonValue = await AsyncStorage.getItem("@BudgeTrip");
-			const trips = JSON.parse(jsonValue);
-			console.log("was able to get data");
-			if (jsonValue !== null && areThereTrips(Object.keys(trips))) {
-				this.setState({
-					loading: false,
-					error: false,
-					plannedTrips: trips,
-				});
-			} else {
-				this.setState({
-					loading: false,
-					error: false,
-					plannedTrips: trips,
-				});
-			}
-		} catch (err) {
-			console.log("ERRO", err);
-			this.setState({ loading: false, error: true });
-			return null;
-		}
-	};
+  getData = async () => {
+    this.setState({ loading: true, error: false });
+    try {
+      const jsonValue = await AsyncStorage.getItem("@BudgeTrip");
+      const trips = JSON.parse(jsonValue);
+      console.log("was able to get data");
+      if (jsonValue !== null && areThereTrips(Object.keys(trips))) {
+        this.setState({
+          loading: false,
+          error: false,
+          plannedTrips: trips,
+        });
+      } else {
+        this.setState({
+          loading: false,
+          error: false,
+          plannedTrips: trips,
+        });
+      }
+    } catch (err) {
+      console.log("ERRO", err);
+      this.setState({ loading: false, error: true });
+      Alert.alert("There was an error getting yours trip. Try again later.");
+      return null;
+    }
+  };
 
 	deleteTrip = async (tripName) => {
 		console.log("WILL DELETE", tripName);
@@ -109,30 +110,33 @@ export default class Trips extends React.Component {
 		this.setState({ plannedTrips: state });
 	};
 
-	updateCost = async () => {
-		this.setState({ updateRequest: true });
-		const placesInThisTrip = this.state.plannedTrips[this.state.tripToEdit]
-			.placesToTravel;
+  updateCost = async () => {
+    this.setState({ updateRequest: true });
+    const placesInThisTrip = this.state.plannedTrips[this.state.tripToEdit]
+      ? this.state.plannedTrips[this.state.tripToEdit].placesToTravel
+      : [];
 
-		const newTotal =
-			placesInThisTrip !== null &&
-				placesInThisTrip.length &&
-				areThereTrips(Object.keys(placesInThisTrip))
-				? placesInThisTrip.reduce((acc, val) => val.budget * 1 + acc, 0)
-				: this.state.plannedTrips[this.state.tripToEdit].totalCost;
+    const newTotal =
+      placesInThisTrip !== null &&
+      placesInThisTrip.length > 0 &&
+      areThereTrips(Object.keys(placesInThisTrip))
+        ? placesInThisTrip.reduce((acc, val) => val.budget * 1 + acc, 0)
+        : this.state.plannedTrips[this.state.tripToEdit].totalCost;
 
-		const newState = this.state.plannedTrips[this.state.tripToEdit];
-		newState.totalCost = newTotal;
-		this.setState(
-			{
-				plannedTrips: {
-					...this.state.plannedTrips,
-					[this.state.tripToEdit]: newState,
-				},
-			},
-			async () => await this.updateInLocalStorage()
-		);
-	};
+    const newState = this.state.plannedTrips[this.state.tripToEdit]
+      ? this.state.plannedTrips[this.state.tripToEdit]
+      : {};
+    newState.totalCost = newTotal;
+    this.setState(
+      {
+        plannedTrips: {
+          ...this.state.plannedTrips,
+          [this.state.tripToEdit]: newState,
+        },
+      },
+      async () => await this.updateInLocalStorage()
+    );
+  };
 
 	updateInLocalStorage = async () => {
 		const jsonValue = JSON.stringify(this.state.plannedTrips);
@@ -162,18 +166,19 @@ export default class Trips extends React.Component {
 		});
 	};
 
-	deleteStorage = async () => {
-		try {
-			await AsyncStorage.clear();
-			console.log("Async deleted");
-			Alert.alert("Your trips were succesfully deleted.");
-			return true;
-		} catch (rr) {
-			console.log("Async dont deleted", err);
-			Alert.alert("There was an error deleting your trips.");
-			return false;
-		}
-	};
+  deleteStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log("Async deleted");
+      Alert.alert("Your trips were succesfully deleted.");
+      this.props.navigation.navigate("Home");
+      return true;
+    } catch (err) {
+      console.log("Async dont deleted", err);
+      Alert.alert("There was an error deleting your trips.");
+      return false;
+    }
+  };
 
 	renderContent = () => {
 		if (this.state.loading) {
@@ -258,60 +263,65 @@ export default class Trips extends React.Component {
 						</Text>
 					)}
 
-					{this.state.plannedTrips !== null &&
-						areThereTrips(Object.keys(this.state.plannedTrips)) &&
-						Object.keys(this.state.plannedTrips).length && (
-							<TouchableOpacity
-								onPress={async () => await this.deleteStorage()}
-								style={styles.button}
-							>
-								<Text>Delete all</Text>
-							</TouchableOpacity>
-						)}
-				</ScrollView>
-			);
-		} else if (this.state.secondPage) {
-			return (
-				<ScrollView>
-					<Text style={styles.whiteText}>Update your trip cost.</Text>
-					{this.state.plannedTrips !== null &&
-						this.state.plannedTrips[this.state.tripToEdit].placesToTravel
-							.length > 0 &&
-						this.state.plannedTrips[this.state.tripToEdit].placesToTravel.map(
-							(item, index) => {
-								return (
-									<View key={index}>
-										<Text style={styles.whiteText}>
-											Location {index + 1}: {item.country}
-										</Text>
-										<TextInput
-											value={item.budget}
-											style={styles.input}
-											onChangeText={(val) => this.onInputChange(val, index)}
-										/>
-									</View>
-								);
-							}
-						)}
-					{this.state.updateRequest && <ActivityIndicator />}
-					<View style={styles.buttonsView}>
-						<TouchableOpacity
-							onPress={async () => await this.deleteTrip(this.state.tripToEdit)}
-							style={styles.button}
-						>
-							<Text style={styles.whiteText}>Cancel Trip</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							onPress={async () => await this.updateCost()}
-							style={styles.button}
-						>
-							<Text style={styles.whiteText}>Update</Text>
-						</TouchableOpacity>
-					</View>
-				</ScrollView>
-			);
-		}
-	};
+          {this.state.plannedTrips !== null &&
+            areThereTrips(Object.keys(this.state.plannedTrips)) &&
+            Object.keys(this.state.plannedTrips).length && (
+              <TouchableOpacity
+                onPress={async () => await this.deleteStorage()}
+                style={styles.button}
+              >
+                <Text>Delete all</Text>
+              </TouchableOpacity>
+            )}
+        </ScrollView>
+      );
+    } else if (this.state.secondPage) {
+      return (
+        <View style={styles.heightScrollView}>
+          <ScrollView style={styles.scrollViewTrips}>
+            <Text style={styles.whiteText}>Update your trip cost.</Text>
+            {this.state.plannedTrips !== null &&
+              this.state.plannedTrips[this.state.tripToEdit] &&
+              this.state.plannedTrips[this.state.tripToEdit].placesToTravel
+                .length > 0 &&
+              this.state.plannedTrips[this.state.tripToEdit].placesToTravel.map(
+                (item, index) => {
+                  return (
+                    <View key={index}>
+                      <Text style={styles.whiteText}>
+                        Location {index + 1}: {item.country}
+                      </Text>
+                      <TextInput
+                        value={item.budget}
+                        style={styles.input}
+                        onChangeText={(val) => this.onInputChange(val, index)}
+                      />
+                    </View>
+                  );
+                }
+              )}
+            {this.state.updateRequest && <ActivityIndicator />}
+            <View style={styles.buttonsView}>
+              <TouchableOpacity
+                onPress={async () =>
+                  await this.deleteTrip(this.state.tripToEdit)
+                }
+                style={styles.button}
+              >
+                <Text style={styles.whiteText}>Cancel Trip</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={async () => await this.updateCost()}
+                style={styles.button}
+              >
+                <Text style={styles.whiteText}>Update</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+      );
+    }
+  };
 
 	render() {
 		return (
