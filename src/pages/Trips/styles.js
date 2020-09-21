@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
   },
   tripCardItem: {
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
+    paddingLeft: 16 * widthScale
   },
   buttonIcon: {
     width: 30 * widthScale,
     height: 30 * widthScale,
-    marginRight: 10 * widthScale,
+    marginRight: 16 * widthScale,
   },
   scrollView: {
     height: 20 * heightScale,
@@ -68,13 +68,16 @@ const styles = StyleSheet.create({
   },
   tripCard: {
     backgroundColor: "white",
-    height: 200 * heightScale,
-    width: 280 * widthScale,
-    borderRadius: 4 * widthScale,
-    padding: 10 * widthScale,
+    paddingTop: 24 * widthScale,
+    paddingBottom: 24 * widthScale,
+    paddingLeft: 16 * widthScale,
+    paddingRight: 16 * widthScale,
     alignItems: "stretch",
     justifyContent: "space-around",
-    marginBottom: 5 * heightScale,
+    marginBottom: 20 * heightScale,
+    width: 289 * widthScale,
+    height: 266 * heightScale,
+    borderRadius: 6,
   },
   input: {
     backgroundColor: "white",
@@ -88,6 +91,27 @@ const styles = StyleSheet.create({
   tripsOverview: {
     marginTop: 20 * heightScale,
   },
+  cardTitle: {
+    width: 253,
+    height: 24,
+    fontSize: 18,
+    fontWeight: "bold",
+    fontStyle: "normal",
+    lineHeight: 24,
+    letterSpacing: 0,
+    color: "#333333"
+  },
+  cardText: {
+    width: 253,
+    height: 21,
+    fontSize: 16,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    lineHeight: 21,
+    letterSpacing: 0,
+    color: "#333333",
+    marginTop: 8 * heightScale
+  }
 });
 
 export default styles;
