@@ -14,6 +14,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  heightScrollView: {
+    height: 450 * heightScale,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  scrollViewTrips: {
+    width: 320 * widthScale,
+    marginTop: 10 * heightScale,
+  },
   whiteText: { color: "white" },
   margin: {
     margin: 5 * widthScale,

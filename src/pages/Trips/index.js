@@ -71,6 +71,7 @@ export default class Trips extends React.Component {
     } catch (err) {
       console.log("ERRO", err);
       this.setState({ loading: false, error: true });
+      Alert.alert("There was an error getting yours trip. Try again later.");
       return null;
     }
   };
@@ -112,16 +113,19 @@ export default class Trips extends React.Component {
   updateCost = async () => {
     this.setState({ updateRequest: true });
     const placesInThisTrip = this.state.plannedTrips[this.state.tripToEdit]
-      .placesToTravel;
+      ? this.state.plannedTrips[this.state.tripToEdit].placesToTravel
+      : [];
 
     const newTotal =
       placesInThisTrip !== null &&
-      placesInThisTrip.length &&
+      placesInThisTrip.length > 0 &&
       areThereTrips(Object.keys(placesInThisTrip))
         ? placesInThisTrip.reduce((acc, val) => val.budget * 1 + acc, 0)
         : this.state.plannedTrips[this.state.tripToEdit].totalCost;
 
-    const newState = this.state.plannedTrips[this.state.tripToEdit];
+    const newState = this.state.plannedTrips[this.state.tripToEdit]
+      ? this.state.plannedTrips[this.state.tripToEdit]
+      : {};
     newState.totalCost = newTotal;
     this.setState(
       {
@@ -167,8 +171,9 @@ export default class Trips extends React.Component {
       await AsyncStorage.clear();
       console.log("Async deleted");
       Alert.alert("Your trips were succesfully deleted.");
+      this.props.navigation.navigate("Home");
       return true;
-    } catch (rr) {
+    } catch (err) {
       console.log("Async dont deleted", err);
       Alert.alert("There was an error deleting your trips.");
       return false;
@@ -272,43 +277,48 @@ export default class Trips extends React.Component {
       );
     } else if (this.state.secondPage) {
       return (
-        <ScrollView>
-          <Text style={styles.whiteText}>Update your trip cost.</Text>
-          {this.state.plannedTrips !== null &&
-            this.state.plannedTrips[this.state.tripToEdit].placesToTravel
-              .length > 0 &&
-            this.state.plannedTrips[this.state.tripToEdit].placesToTravel.map(
-              (item, index) => {
-                return (
-                  <View key={index}>
-                    <Text style={styles.whiteText}>
-                      Location {index + 1}: {item.country}
-                    </Text>
-                    <TextInput
-                      value={item.budget}
-                      style={styles.input}
-                      onChangeText={(val) => this.onInputChange(val, index)}
-                    />
-                  </View>
-                );
-              }
-            )}
-          {this.state.updateRequest && <ActivityIndicator />}
-          <View style={styles.buttonsView}>
-            <TouchableOpacity
-              onPress={async () => await this.deleteTrip(this.state.tripToEdit)}
-              style={styles.button}
-            >
-              <Text style={styles.whiteText}>Cancel Trip</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={async () => await this.updateCost()}
-              style={styles.button}
-            >
-              <Text style={styles.whiteText}>Update</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+        <View style={styles.heightScrollView}>
+          <ScrollView style={styles.scrollViewTrips}>
+            <Text style={styles.whiteText}>Update your trip cost.</Text>
+            {this.state.plannedTrips !== null &&
+              this.state.plannedTrips[this.state.tripToEdit] &&
+              this.state.plannedTrips[this.state.tripToEdit].placesToTravel
+                .length > 0 &&
+              this.state.plannedTrips[this.state.tripToEdit].placesToTravel.map(
+                (item, index) => {
+                  return (
+                    <View key={index}>
+                      <Text style={styles.whiteText}>
+                        Location {index + 1}: {item.country}
+                      </Text>
+                      <TextInput
+                        value={item.budget}
+                        style={styles.input}
+                        onChangeText={(val) => this.onInputChange(val, index)}
+                      />
+                    </View>
+                  );
+                }
+              )}
+            {this.state.updateRequest && <ActivityIndicator />}
+            <View style={styles.buttonsView}>
+              <TouchableOpacity
+                onPress={async () =>
+                  await this.deleteTrip(this.state.tripToEdit)
+                }
+                style={styles.button}
+              >
+                <Text style={styles.whiteText}>Cancel Trip</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={async () => await this.updateCost()}
+                style={styles.button}
+              >
+                <Text style={styles.whiteText}>Update</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
       );
     }
   };
