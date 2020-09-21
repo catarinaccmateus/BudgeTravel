@@ -12,7 +12,6 @@ console.disableYellowBox = true;
 import Main from "./src/pages/Main";
 import Trips from "./src/pages/Trips";
 import Create from "./src/pages/Create";
-import PreviousTrips from "./src/pages/PreviousTrips";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -29,6 +28,7 @@ export default class App extends React.Component {
   state = {
     appIsReady: false,
   };
+
   render() {
     return (
       <NavigationContainer>
@@ -54,15 +54,6 @@ export default class App extends React.Component {
             component={Trips}
             options={{
               title: "Your trips",
-              headerTitleStyle: { alignSelf: "center", color: colors.header },
-              headerTintColor: colors.header,
-            }}
-          />
-          <Stack.Screen
-            name="PreviousTrips"
-            component={PreviousTrips}
-            options={{
-              title: "Previous trips",
               headerTitleStyle: { alignSelf: "center", color: colors.header },
               headerTintColor: colors.header,
             }}

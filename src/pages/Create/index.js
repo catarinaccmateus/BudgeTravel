@@ -42,7 +42,7 @@ export default class Create extends React.Component {
   state = {
     tripDuration: "",
     travelers: "",
-    tripName: "Trip1",
+    tripName: "",
     date: {
       start: "",
       end: "",
@@ -65,6 +65,7 @@ export default class Create extends React.Component {
   };
 
   updateTripDuration = () => {
+    console.log("updating duration");
     const totalDays = this.state.placesToTravel.length
       ? this.state.placesToTravel.reduce(
           (acc, val) => val.duration * 1 + acc,
@@ -75,18 +76,23 @@ export default class Create extends React.Component {
   };
 
   saveTripDetails = async () => {
+    if (this.state.totalDuration < this.state.minDuration) {
+      return Alert.alert(
+        "You need to add more locations to achieve the minimum duration."
+      );
+    }
     this.setState({ saving: true });
-    const totalCost = this.state.placesToTravel.reduce((acc, val) => {
-      return acc + val.travelers * val.budget;
+    const totalCost = this.state.placesToTravel.reduce((acc, value) => {
+      return acc + this.state.travelers * value.budget;
     }, 0);
-    const endDate = addDays(this.state.beginningDate, tripDuration);
-    const previousSavedObject = this.getData();
+    const endDate = addDays(this.state.initialDate, this.state.tripDuration);
+    const previousSavedObject = await this.getData();
     if (previousSavedObject !== null) {
       previousSavedObject[this.state.tripName] = {
         tripDuration: this.state.tripDuration,
         travelers: this.state.travelers,
-        beginningDate: this.state.beginningDate,
-        endDate: endDate,
+        beginningDate: this.state.initialDate.getTime(),
+        endDate: endDate.getTime(),
         totalCost: totalCost,
         placesToTravel: this.state.placesToTravel,
       };
@@ -96,7 +102,7 @@ export default class Create extends React.Component {
     try {
       const jsonValue = JSON.stringify(previousSavedObject);
       await AsyncStorage.setItem("@BudgeTrip", jsonValue);
-      this.getData();
+      await this.getData();
       this.setState({ saving: false });
       this.props.navigation.navigate("Trips");
     } catch (e) {
@@ -117,7 +123,11 @@ export default class Create extends React.Component {
 
   onClickContinue = () => {
     if (this.state.firstPage) {
-      this.setState({ firstPage: false, secondPage: true });
+      if (this.state.tripName.length && this.state.travelers) {
+        this.setState({ firstPage: false, secondPage: true });
+      } else {
+        Alert.alert("You need to define a trip name and number of travelers.");
+      }
     } else if (this.state.secondPage) {
       this.setState({ firstPage: false, secondPage: false, thirdPage: true });
     }
@@ -134,7 +144,7 @@ export default class Create extends React.Component {
   getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("@BudgeTrip");
-      console.log("getData", jsonValue);
+      console.log("I was able to get data");
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       return null;
@@ -166,7 +176,7 @@ export default class Create extends React.Component {
         <TextInput
           style={styles.input}
           placeholder="Number of travelers"
-          onChangeText={(val) => this.setState({ val })}
+          onChangeText={(val) => this.setState({ travelers: val })}
           keyboardType={"number-pad"}
           onFocus={() => this.hideFooter()}
           onBlur={() => this.showFooter()}
@@ -218,6 +228,17 @@ export default class Create extends React.Component {
   renderAddLocation = () => {
     return (
       <View style={styles.createView}>
+        {this.state.placesToTravel.length > 0 && (
+          <Text style={styles.whiteText}>
+            You have set {this.state.placesToTravel.length} places and a total
+            duration of {this.state.totalDuration}.
+            {this.state.tripDuration < 30 && (
+              <Text>
+                The minimum duration is {this.state.minDuration} days.
+              </Text>
+            )}
+          </Text>
+        )}
         <LocationInput
           addDestinationToState={this.addDestinationToState}
           hideFooter={() => this.hideFooter()}
@@ -228,8 +249,13 @@ export default class Create extends React.Component {
     );
   };
 
+  deleteItem = (index) => {
+    const totalItems = this.state.placesToTravel;
+    totalItems.splice(index, 1);
+    this.setState({ placesToTravel: totalItems });
+  };
+
   renderLocationCards = () => {
-    console.log("stateee", this.state.placesToTravel);
     return (
       <View style={styles.scrollView}>
         <ScrollView contentContainerStyle={styles.resume}>
@@ -242,6 +268,7 @@ export default class Create extends React.Component {
                   duration={place.duration * 1}
                   budget={place.budget * 1}
                   travelers={this.state.travelers * 1}
+                  deleteItem={() => this.deleteItem(index)}
                 />
               );
             })
@@ -259,7 +286,6 @@ export default class Create extends React.Component {
   };
 
   render() {
-    console.log("is it third page", this.state.placesToTravel);
     return (
       <React.Fragment>
         <ScrollView contentContainerStyle={styles.container}>

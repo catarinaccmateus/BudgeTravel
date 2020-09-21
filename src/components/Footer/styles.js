@@ -16,6 +16,10 @@ const styles = StyleSheet.create({
     zIndex: 99,
     elevation: 99,
   },
+  extra: {
+    justifyContent: "center",
+    alignContent: "center",
+  },
   button: {
     position: "relative",
     top: -25 * heightScale,

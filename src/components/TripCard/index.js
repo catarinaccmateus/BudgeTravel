@@ -4,16 +4,20 @@ import { Divider } from "react-native-paper";
 
 import styles from "./styles";
 
-export default function TripCard({ location, duration, budget, travelers }) {
+export default function TripCard({
+  location,
+  duration,
+  budget,
+  travelers,
+  deleteItem,
+}) {
   return (
-    <TouchableOpacity
-      onPress={() => console.log("PRESSED")}
-      style={styles.card}
-    >
+    <View style={styles.card}>
       <View style={styles.content}>
         <Text>Location</Text>
         <Text>Nr of days</Text>
         <Text>Total</Text>
+        <Text>Delete?</Text>
       </View>
 
       <Divider />
@@ -21,7 +25,10 @@ export default function TripCard({ location, duration, budget, travelers }) {
         <Text style={styles.text}>{location}</Text>
         <Text style={styles.text}>{duration}</Text>
         <Text style={styles.text}>{budget * travelers * duration}</Text>
+        <TouchableOpacity onPress={deleteItem}>
+          <Text style={styles.text}>X</Text>
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }

@@ -6,6 +6,10 @@ import styles from "./styles";
 import { countries } from "../../utils/constants";
 import { widthScale, heightScale } from "./../../utils/constants";
 
+const countriesTransformed = countries.map((item) => {
+  return { label: item, value: item };
+});
+
 export default class LocationInput extends React.Component {
   state = {
     country: null,
@@ -13,27 +17,22 @@ export default class LocationInput extends React.Component {
     duration: "",
   };
   render() {
-    const countrySelected = this.state.country;
-    console.log("country", countrySelected);
-    const countriesTest = countries.map((item) => {
-      return { label: item, value: item };
-    });
-    console.log("THIIS", countriesTest.length, countriesTest[0]);
+    const countrySelected = this.state.country || "Australia";
     return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <Text style={styles.titleDestination}>Choose your destination </Text>
           <DropDownPicker
             defaultValue={this.state.country}
-            items={countriesTest}
+            items={countriesTransformed}
             containerStyle={styles.dropdown}
             style={styles.dropdown}
             itemStyle={{
               justifyContent: "flex-start",
             }}
             dropDownStyle={{ backgroundColor: "#fafafa" }}
-            onChangeItem={(val) => {
-              this.setState({ country: val });
+            onChangeItem={(item) => {
+              this.setState({ country: item.value });
             }}
             placeholder="Choose a country"
           />

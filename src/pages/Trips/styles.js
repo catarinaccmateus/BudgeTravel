@@ -9,6 +9,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     alignItems: "center",
   },
+  buttonsView: {
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  whiteText: { color: "white" },
   margin: {
     margin: 5 * widthScale,
     borderColor: "white",
@@ -28,12 +34,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  tripCard: {
-    backgroundColor: "white",
-    width: 200 * widthScale,
-    borderRadius: 10 * widthScale,
-    height: 30 * widthScale,
-    marginBottom: 5 * heightScale,
+  tripCardItem: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonIcon: {
     width: 30 * widthScale,
@@ -42,6 +46,11 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     height: 20 * heightScale,
+    alignItems: "center",
+  },
+  container: {
+    height: 560 * heightScale,
+    backgroundColor: colors.background,
     alignItems: "center",
   },
   card: {
@@ -55,16 +64,29 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginBottom: 52 * heightScale,
     height: 70 * heightScale,
-
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 10,
-
-    elevation: 10,
+  },
+  tripCard: {
+    backgroundColor: "white",
+    height: 200 * heightScale,
+    width: 280 * widthScale,
+    borderRadius: 4 * widthScale,
+    padding: 10 * widthScale,
+    alignItems: "stretch",
+    justifyContent: "space-around",
+    marginBottom: 5 * heightScale,
+  },
+  input: {
+    backgroundColor: "white",
+    width: 220 * widthScale,
+    borderRadius: 4,
+    paddingLeft: 13 * widthScale,
+    marginBottom: 10 * heightScale,
+    color: "black",
+    height: 40 * heightScale,
+  },
+  tripsOverview: {
+    marginTop: 20 * heightScale,
   },
 });
 

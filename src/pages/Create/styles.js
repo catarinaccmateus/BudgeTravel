@@ -35,6 +35,10 @@ const styles = StyleSheet.create({
     fontSize: 20 * widthScale,
     color: "white",
   },
+  whiteText: {
+    color: "white",
+    margin: 5 * widthScale,
+  },
   margin: {
     margin: 5,
     borderColor: "white",

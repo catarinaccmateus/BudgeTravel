@@ -9,6 +9,8 @@ import {
 
 import styles from "./styles";
 
+import { useNavigation } from "@react-navigation/native";
+
 export default function Footer({
   onClickContinue,
   onClickBack,
@@ -18,10 +20,14 @@ export default function Footer({
   saveTrip,
   canSave,
   saving,
+  tripsPage,
 }) {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      {!firstPage ? (
+    <View
+      style={!tripsPage ? styles.container : [styles.container, styles.extra]}
+    >
+      {!firstPage && !tripsPage && (
         <TouchableOpacity
           onPress={() => onClickBack()}
           style={styles.backButton}
@@ -32,51 +38,54 @@ export default function Footer({
           />
           <Text>Back</Text>
         </TouchableOpacity>
-      ) : (
-        <View style={styles.backButton}></View>
       )}
+      {firstPage && !tripsPage && <View style={styles.backButton}></View>}
       <TouchableOpacity
         style={styles.button}
         activeOpacity={1}
-        onPress={() => this.props.navigation.navigate("Home")}
+        onPress={() => navigation.navigate("Home")}
       >
         <Image
           source={require("../../../assets/icon_circular.png")}
           style={styles.image}
         />
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={
-          firstPage || secondPage ? () => onClickContinue() : () => saveTrip()
-        }
-        style={styles.continueButton}
-      >
-        {!thirdPage && (
-          <Image
-            source={require("../../../assets/chevron_right.png")}
-            style={styles.continueIcon}
-          />
-        )}
-        {thirdPage && !saving && (
-          <Image
-            source={require("../../../assets/palm.png")}
-            style={
-              canSave && thirdPage
-                ? styles.continueIcon
-                : styles.disabledContinueIcon
-            }
-          />
-        )}
-        {thirdPage && saving && <ActivityIndicator />}
+      {!tripsPage && (
+        <TouchableOpacity
+          onPress={
+            firstPage || secondPage ? () => onClickContinue() : () => saveTrip()
+          }
+          style={styles.continueButton}
+        >
+          {!thirdPage && (
+            <Image
+              source={require("../../../assets/chevron_right.png")}
+              style={styles.continueIcon}
+            />
+          )}
+          {thirdPage && !saving && (
+            <Image
+              source={require("../../../assets/palm.png")}
+              style={
+                canSave && thirdPage
+                  ? styles.continueIcon
+                  : styles.disabledContinueIcon
+              }
+            />
+          )}
+          {thirdPage && saving && <ActivityIndicator />}
 
-        {!thirdPage ? (
-          <Text>Continue</Text>
-        ) : (
-          <Text style={canSave && thirdPage ? {} : styles.disabledContinueIcon}>
-            Save Trip
-          </Text>
-        )}
-      </TouchableOpacity>
+          {!thirdPage ? (
+            <Text>Continue</Text>
+          ) : (
+            <Text
+              style={canSave && thirdPage ? {} : styles.disabledContinueIcon}
+            >
+              Save Trip
+            </Text>
+          )}
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
