@@ -30,18 +30,29 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     padding: 30 * widthScale,
-    width: 240 * widthScale,
-    borderRadius: 5 * widthScale,
+    width: 218 * widthScale,
     marginTop: 15 * heightScale,
     marginBottom: 10 * heightScale,
     height: 70 * heightScale,
+
+    borderRadius: 6
+  },
+  buttonText: {
+    width: 89,
+    height: 24,
+    fontSize: 16,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    letterSpacing: 0,
+    color: "#333333"
   },
   buttonIcon: {
     width: 30 * widthScale,
     height: 30 * widthScale,
   },
   logo: {
-    height: 130 * heightScale,
+    width: 197 * widthScale,
+    height: 95 * heightScale,
     resizeMode: "contain",
     marginBottom: 30,
     marginTop: 30,

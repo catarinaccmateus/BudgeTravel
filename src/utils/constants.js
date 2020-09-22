@@ -16,7 +16,7 @@ export const colors = {
   header: "#753f23",
 };
 
-export const buttonOpacity = 0.7;
+export const buttonOpacity = 0.6;
 
 export const countries = [
   "Afghanistan",

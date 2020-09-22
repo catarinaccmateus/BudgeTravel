@@ -218,6 +218,7 @@ export default class Trips extends React.Component {
 								return (
 									<TouchableOpacity
 										class={styles.tripCard}
+										activeOpacity={.9}
 										onPress={() => this.showTripDetails(val)}
 										style={styles.tripCard}
 										key={index}
@@ -252,7 +253,7 @@ export default class Trips extends React.Component {
 											<View style={{ flexDirection: "column" }}>
 												<Text style={styles.cardTitle}>Total Cost</Text>
 												<Text style={styles.cardText}>
-													{this.state.plannedTrips[val].totalCost || "1020"}
+													{this.state.plannedTrips[val].totalCost}€
 												</Text>
 											</View>
 										</View>
@@ -272,9 +273,10 @@ export default class Trips extends React.Component {
 						Object.keys(this.state.plannedTrips).length && (
 							<TouchableOpacity
 								onPress={async () => await this.deleteStorage()}
-								style={styles.button}
+							style={styles.button}
+							activeOpacity={.7}
 							>
-								<Text>Delete all</Text>
+								<Text style={{ color: "white" }}>Delete all</Text>
 							</TouchableOpacity>
 						)}
 				</ScrollView>
@@ -283,7 +285,6 @@ export default class Trips extends React.Component {
 			return (
 				<View style={styles.heightScrollView}>
 					<ScrollView style={styles.scrollViewTrips}>
-						<Text style={styles.whiteText}>Update your trip cost.</Text>
 						{this.state.plannedTrips !== null &&
 							this.state.plannedTrips[this.state.tripToEdit] &&
 							this.state.plannedTrips[this.state.tripToEdit].placesToTravel
@@ -291,15 +292,63 @@ export default class Trips extends React.Component {
 							this.state.plannedTrips[this.state.tripToEdit].placesToTravel.map(
 								(item, index) => {
 									return (
-										<View key={index}>
-											<Text style={styles.whiteText}>
-												Location {index + 1}: {item.country}
+										<View key={index} style={styles.updateView}>
+											<Text style={styles.dayLabel}>
+												Day {index + 1}
 											</Text>
-											<TextInput
-												value={item.budget}
-												style={styles.input}
-												onChangeText={(val) => this.onInputChange(val, index)}
+											<Text style={styles.locationLabel}>
+												{item.country}
+											</Text>
+											<View style={styles.inputGroup}>
+												<Text style={styles.label}>
+													Stay price
+												</Text>
+												<TextInput
+													value={item.budget}
+													style={styles.input}
+													onChangeText={(val) => this.onInputChange(val, index)}
+												/>
+											</View>
+
+											<View style={styles.inputGroup}>
+												<Text style={styles.label}>
+													Food price
+												</Text>
+												<TextInput
+													value={item.budget}
+													style={styles.input}
+													onChangeText={(val) => this.onInputChange(val, index)}
+												/>
+											</View>
+
+											<View style={styles.inputGroup}>
+												<Text style={styles.label}>
+													Entertainment price
+												</Text>
+												<TextInput
+													value={item.budget}
+													style={styles.input}
+													onChangeText={(val) => this.onInputChange(val, index)}
+												/>
+											</View>
+
+											<View style={styles.inputGroup}>
+												<Text style={styles.label}>
+													Extras price
+												</Text>
+												<TextInput
+													value={item.budget}
+													style={styles.input}
+													onChangeText={(val) => this.onInputChange(val, index)}
+												/>
+											</View>
+											<View
+												style={{
+													borderBottomColor: 'black',
+													borderBottomWidth: 1,
+												}}
 											/>
+
 										</View>
 									);
 								}

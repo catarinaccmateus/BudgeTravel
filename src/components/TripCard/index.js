@@ -16,7 +16,7 @@ export default function TripCard({
       <View style={styles.content}>
         <Text>Location</Text>
         <Text>Nr of days</Text>
-        <Text>Total</Text>
+        <Text>Total €</Text>
         <Text>Delete?</Text>
       </View>
 
@@ -24,7 +24,7 @@ export default function TripCard({
       <View style={styles.content}>
         <Text style={styles.text}>{location}</Text>
         <Text style={styles.text}>{duration}</Text>
-        <Text style={styles.text}>{budget * travelers * duration}</Text>
+        <Text style={styles.text}>{budget * travelers * duration} €</Text>
         <TouchableOpacity onPress={deleteItem}>
           <Text style={styles.text}>X</Text>
         </TouchableOpacity>

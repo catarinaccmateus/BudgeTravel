@@ -35,13 +35,13 @@ const styles = StyleSheet.create({
     marginTop: 10 * heightScale,
   },
   button: {
-    width: 110 * widthScale,
+    width: 289 * widthScale,
     height: 40 * heightScale,
     padding: 5 * widthScale,
     borderRadius: 6,
-    borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#bd0000",
   },
   tripCardItem: {
     flexDirection: "row",
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "white",
-    width: 220 * widthScale,
+    width: 310 * widthScale,
     borderRadius: 4,
     paddingLeft: 13 * widthScale,
     marginBottom: 10 * heightScale,
@@ -120,7 +120,40 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     color: "#333333",
     marginTop: 8 * heightScale
+  },
+  dayLabel: {
+    width: 285,
+    height: 21,
+    fontSize: 16,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    lineHeight: 21,
+    letterSpacing: 0,
+    color: "#753f23",
+    marginBottom: 10 * heightScale
+  },
+  locationLabel: {
+    width: 285,
+    height: 21,
+    fontSize: 16,
+    fontWeight: "bold",
+    fontStyle: "normal",
+    lineHeight: 21,
+    letterSpacing: 0,
+    color: "#753f23",
+    marginBottom: 37 * heightScale
+  },
+  label: {
+    color: "#753f23",
+    marginBottom: 5 * heightScale
+  },
+  inputGroup: {
+    marginBottom: 15 * heightScale
+  },
+  updateView: {
+    marginBottom: 40 * heightScale
   }
+
 });
 
 export default styles;

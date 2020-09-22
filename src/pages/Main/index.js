@@ -19,7 +19,7 @@ export default function Main({ navigation }) {
               source={require("../../../assets/palm.png")}
               style={styles.buttonIcon}
             />
-            <Text>Create trip</Text>
+            <Text style={styles.buttonText}>Create trip</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={buttonOpacity} onPress={() => navigation.navigate("Trips")}>
@@ -28,7 +28,7 @@ export default function Main({ navigation }) {
               source={require("../../../assets/view.png")}
               style={styles.buttonIcon}
             />
-            <Text>View trip</Text>
+            <Text style={styles.buttonText}>View trip</Text>
           </View>
         </TouchableOpacity>
       </View>
